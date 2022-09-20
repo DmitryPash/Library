@@ -19,15 +19,21 @@
             </div>
           </form>
         </div>
-        <router-link to="/">
-          <div class="login-btn" @click="sendDataLogin">Continue</div>
+        <router-link :to="{name: 'accountbooks', params:{date: this.login}}">
+          <div class="login-btn" @click="sendDataLogin(login)">Continue</div>
         </router-link>
+   
+
       </div>
     </div>
   </div>
 </template>
 
 <script>
+
+import { mapActions, mapGetters } from 'vuex';
+
+
 export default {
   name: "Login",
   data() {
@@ -40,12 +46,18 @@ export default {
     };
   },
   methods: {
-    sendDataLogin() {
-      this.$emit("toSendData", {
-        loginData: this.login,
-      });
+    sendDataLogin(login) {
+      this.ADD_NEW_USER(login)
     },
+    ...mapActions([
+      'ADD_NEW_USER'
+    ]),
   },
+  computed: {
+    ...mapGetters([
+      "USER"
+    ])
+  }
 };
 </script>
 

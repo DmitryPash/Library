@@ -1,24 +1,34 @@
 <template>
-  <div class="container">
-    <AccountBooksVue></AccountBooksVue>
-    <!-- <router-link to="/login">Go to About</router-link>
-    <router-view></router-view> -->
+  <div class="wrapper">
+    <headerVue></headerVue>
+    <div class="container">
+      <router-link :to="{name: 'accountbooks'}">account</router-link>
+      <br>
+      <router-link :to="{name: 'login'}">login</router-link>
+      <br>
 
+      
+      <router-view></router-view>
+    </div>
   </div>
 </template>
 
 <script>
-import AccountBooksVue from "./components/AccountBooks.vue";
+import headerVue from "./components/header.vue";
 export default {
   name: "App",
   components: {
-    AccountBooksVue,
+    headerVue,
   },
 };
 </script>
 
+
+
+
+
 <style lang="scss">
-  * {
-    box-sizing: border-box;
-  }
+  @import '../src/css/style.scss';
+  @import '../src/css/grid.scss';
+  @import '../src/css/UI.scss';
 </style>
