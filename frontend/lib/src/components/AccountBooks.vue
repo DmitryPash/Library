@@ -38,15 +38,21 @@
     <template v-if="this.BOOKS.length > 0">
       
 
-      You've already written this many books - {{ this.BOOKS.length }}
+     
 
       <div class="book-container">
         <div class="row">
-          <div class="col-10">
-            <div class="books-title">Library</div>
+          <div class="col-md-10">
+            <div class="books-header">
+              <div class="books-header-title">Library</div>
+              <div class="books-header-subtitle"> 
+                You've already written this many books - {{ this.BOOKS.length }}
+              </div>
+            </div>
+           
             <div class="row">
         
-        <div class="col-6" v-for="(book, index) in BOOKS" :key="book.index">
+        <div class="col-sm-6" v-for="(book, index) in BOOKS" :key="book.index">
           <div class="book-wrapper">
             <div class="book-img">
               <!-- <img :src="book.image_url" :alt="book.title" /> -->
@@ -72,7 +78,7 @@
 
       </div>
           </div>
-          <div class="col-2">
+          <div class="col-md-2">
             <div class="books-title">Deleted books</div>
             <div class="deleted-books">
               <div class="deleted-books-item" v-for="delitem in DELBOOK" :key="delitem.id">
@@ -91,14 +97,14 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from "vuex";
+import { mapActions, mapGetters, mapMutations } from "vuex";
 
 export default {
   name: "AccaountBooks",
   components: {},
   data() {
     return {
-      bookID: 1,
+      // bookID: 1,
       userBooks: [],
       stateOfBook: null,
       errors: [],
@@ -109,14 +115,16 @@ export default {
       return new Date().toLocaleTimeString();
     },
     addNewBook() {
+      this.SET_ADD_BOOKID()
       const newBooks = {
-        id: this.bookID++,
+        id: this.BOOKID,
         title: this.BOOKS.title,
         author: this.BOOKS.author,
         ISBN: this.BOOKS.ISBN,
         date: this.printDate(),
         storyline: this.BOOKS.storyline,
       };
+
       this.ADD_NEW_BOOKS(newBooks);
     },
     infoBook(book) {
@@ -134,13 +142,12 @@ export default {
       "DELETE_BOOK",
       "SHOW_INFO_BOOK",
     ]),
-
-    // getRandomInt(min, max) {
-    //   return Math.floor(Math.random() * (max - min)) + min;
-    // }
+    ...mapMutations([
+      'SET_ADD_BOOKID'
+    ])
   },
   computed: {
-    ...mapGetters(["BOOKS", "DELBOOK"]),
+    ...mapGetters(["BOOKS", "DELBOOK", 'BOOKID']),
   },
   mounted() {
     this.GET_BOOKS_FROM_API();
@@ -150,6 +157,17 @@ export default {
 
 <style lang="scss">
 .books {
+  &-header {
+    margin-bottom: 25px;
+    text-align: center;
+    &-title {
+      font-weight: 700;
+      font-size: 28px;
+    }
+    &-subtitle {
+      font-size: 14px;
+    }
+  }
   &-title {
     font-weight: 700;
     font-size: 28px;

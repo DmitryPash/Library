@@ -46,6 +46,8 @@ export default {
 
   }
   &-login {
+    display: flex;
+    gap: 20px;
     &-link {
         color: #ddd;
         text-decoration: none;

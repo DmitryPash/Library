@@ -53,6 +53,7 @@ export default {
 
 <style lang="scss">
     .book-modify {
+        margin-bottom: 25px;
         &-icon {
             background-image: url(../images/svg/pen.svg);
             background-repeat: no-repeat;
@@ -60,6 +61,7 @@ export default {
             background-size: cover;
             width: 20px;
             height: 20px;
+            cursor: pointer;
         }
         &-input {
             max-width: 200px;

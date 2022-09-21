@@ -8,7 +8,7 @@ let store = new Vuex.Store({
         books: [],
         deleteBook: [],
         user: [],
-    
+        bookID: 1,
     },
     mutations: {
         SET_NEW_USER:(state,user) => {  
@@ -25,8 +25,11 @@ let store = new Vuex.Store({
             state.deleteBook.push(books)
             state.books = state.books.filter(e => e != books)
         },
-        SET_INFO_BOOKS:(state,books) => {
-            console.log(books)
+        // SET_INFO_BOOKS:(state,books) => {
+        //     console.log(books)
+        // },
+        SET_ADD_BOOKID:(state) => {
+            state.bookID++
         }
     },
     actions: {
@@ -56,7 +59,6 @@ let store = new Vuex.Store({
        SHOW_INFO_BOOK({commit}, books) {
         commit('SET_INFO_BOOKS', books)
        },
-
     },
     getters: {
         BOOKS(state){
@@ -68,7 +70,9 @@ let store = new Vuex.Store({
         DELBOOK(state) {
             return state.deleteBook;
         },
-       
+        BOOKID(state) {
+            return state.bookID;
+        }
     },
 })
 
