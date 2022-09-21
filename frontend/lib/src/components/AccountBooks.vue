@@ -36,52 +36,54 @@
     </div>
 
     <template v-if="this.BOOKS.length > 0">
-      
-
-     
-
-      <div class="book-container">
+      <div class="book-container" ref="bookitem">
         <div class="row">
           <div class="col-md-10">
             <div class="books-header">
               <div class="books-header-title">Library</div>
-              <div class="books-header-subtitle"> 
+              <div class="books-header-subtitle">
                 You've already written this many books - {{ this.BOOKS.length }}
               </div>
             </div>
-           
+
             <div class="row">
-        
-        <div class="col-sm-6" v-for="(book, index) in BOOKS" :key="book.index">
-          <div class="book-wrapper">
-            <div class="book-img">
-              <!-- <img :src="book.image_url" :alt="book.title" /> -->
-            </div>
-            <div class="book-title">{{ book.title }}</div>
-            <!-- <div class="book-title">{{ book.date }}</div> -->
-            <div class="book-author">{{ book.author }}</div>
-
-            <div class="book-footer flex space-between">
-              <router-link
-                :to="{ name: 'bookitem', params: { id: book.id } }"
-                class="ui-btn book-btn-edit"
+              <div
+                class="col-sm-6"
+                v-for="(book, index) in BOOKS"
+                :key="book.index"
               >
-                Edit
-              </router-link>
-              <button
-                @click="RemoveBook(book, index)"
-                class="ui-btn book-btn-delete"
-              ></button>
-            </div>
-          </div>
-        </div>
+                <div class="book-wrapper">
+                  <div class="book-img">
+                    <!-- <img :src="book.image_url" :alt="book.title" /> -->
+                  </div>
+                  <div class="book-title">{{ book.title }}</div>
+                  <!-- <div class="book-title">{{ book.date }}</div> -->
+                  <div class="book-author">{{ book.author }}</div>
 
-      </div>
+                  <div class="book-footer flex space-between">
+                    <router-link
+                      :to="{ name: 'bookitem', params: { id: book.id } }"
+                      class="ui-btn book-btn-edit"
+                    >
+                      Edit
+                    </router-link>
+                    <button
+                      @click="RemoveBook(book, index)"
+                      class="ui-btn book-btn-delete"
+                    ></button>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
           <div class="col-md-2">
             <div class="books-title">Deleted books</div>
             <div class="deleted-books">
-              <div class="deleted-books-item" v-for="delitem in DELBOOK" :key="delitem.id">
+              <div
+                class="deleted-books-item"
+                v-for="delitem in DELBOOK"
+                :key="delitem.id"
+              >
                 {{ delitem.title }}
                 -
                 {{ delitem.date }}
@@ -89,10 +91,8 @@
             </div>
           </div>
         </div>
-        
       </div>
     </template>
-   
   </div>
 </template>
 
@@ -115,7 +115,7 @@ export default {
       return new Date().toLocaleTimeString();
     },
     addNewBook() {
-      this.SET_ADD_BOOKID()
+      this.SET_ADD_BOOKID();
       const newBooks = {
         id: this.BOOKID,
         title: this.BOOKS.title,
@@ -124,8 +124,10 @@ export default {
         date: this.printDate(),
         storyline: this.BOOKS.storyline,
       };
-
       this.ADD_NEW_BOOKS(newBooks);
+      // const el = document.getElementById('el');
+      this.$refs.bookitem.scrollIntoView({behavior: "smooth"});
+      // el.scrollIntoView();
     },
     infoBook(book) {
       this.SHOW_INFO_BOOK(book);
@@ -135,19 +137,17 @@ export default {
       book.date = this.printDate();
       this.DELETE_BOOK(book);
     },
-    
+
     ...mapActions([
       "GET_BOOKS_FROM_API",
       "ADD_NEW_BOOKS",
       "DELETE_BOOK",
       "SHOW_INFO_BOOK",
     ]),
-    ...mapMutations([
-      'SET_ADD_BOOKID'
-    ])
+    ...mapMutations(["SET_ADD_BOOKID"]),
   },
   computed: {
-    ...mapGetters(["BOOKS", "DELBOOK", 'BOOKID']),
+    ...mapGetters(["BOOKS", "DELBOOK", "BOOKID"]),
   },
   mounted() {
     this.GET_BOOKS_FROM_API();
@@ -280,6 +280,4 @@ export default {
 .fade-enter-to {
   opacity: 1;
 }
-
-
 </style>

@@ -8,7 +8,7 @@ let store = new Vuex.Store({
         books: [],
         deleteBook: [],
         user: [],
-        bookID: 1,
+        bookID: 0,
     },
     mutations: {
         SET_NEW_USER:(state,user) => {  

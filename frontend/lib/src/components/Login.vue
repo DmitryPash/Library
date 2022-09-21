@@ -5,15 +5,15 @@
         <div class="login-title">login</div>
         <div class="login-form">
           <form action="">
-            <div class="login-form-field">
+            <div class="ui-form-field">
               <label for="name">Name</label>
               <input type="text" id="name" v-model="login.username" />
             </div>
-            <div class="login-form-field">
+            <div class="ui-form-field">
               <label for="surname">Surname</label>
               <input type="text" id="surname" v-model="login.surname" />
             </div>
-            <div class="login-form-field">
+            <div class="ui-form-field">
               <label for="email">Email</label>
               <input type="text" id="email" v-model="login.email" />
             </div>
