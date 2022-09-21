@@ -2,10 +2,10 @@
   <div class="wrapper">
     <headerVue></headerVue>
     <div class="container">
-      <router-link :to="{name: 'accountbooks'}">account</router-link>
+      <!-- <router-link :to="{name: 'accountbooks'}">account</router-link>
       <br>
       <router-link :to="{name: 'login'}">login</router-link>
-      <br>
+      <br> -->
 
       
       <router-view></router-view>

@@ -1,7 +1,33 @@
 <template>
-    <div class="wrapper">
-        <h1>book - {{BOOKS[id].title}}</h1>
-        <input type="text" v-model="BOOKS[id].title">
+    <div class="book-wrap">
+    <div class="books-title">Book info</div>
+
+        <div class="book-modify flex space-between valign-center">
+            <div class="book-title" v-if="title == false">Title - <span class="book-modify-name">{{BOOKS[id].title}}</span></div>
+            <input type="text" :placeholder="BOOKS[id].title" v-model="BOOKS[id].title" class="ui-input book-modify-input" v-else>
+            <div class="book-modify-icon" @click="title = !title"></div>
+        </div>
+        <div class="book-modify flex space-between valign-center">
+            <div class="book-title" v-if="title == false">Author - <span class="book-modify-name">{{BOOKS[id].author}}</span></div>
+            <input type="text" :placeholder="BOOKS[id].author" v-model="BOOKS[id].author" class="ui-input book-modify-input" v-else>
+            <div class="book-modify-icon" @click="title = !title"></div>
+        </div>
+        <div class="book-modify flex space-between valign-center">
+            <div class="book-title" v-if="title == false">ISBN - <span class="book-modify-name">{{BOOKS[id].ISBN}}</span></div>
+            <input type="text" :placeholder="BOOKS[id].ISBN" v-model="BOOKS[id].ISBN" class="ui-input book-modify-input" v-else>
+            <div class="book-modify-icon" @click="title = !title"></div>
+        </div>
+        <div class="book-modify flex space-between valign-center">
+            <div class="book-title" v-if="title == false">Date - <span class="book-modify-name">{{BOOKS[id].date}}</span></div>
+            <input type="text" :placeholder="BOOKS[id].date" v-model="BOOKS[id].date" class="ui-input book-modify-input" v-else>
+            <div class="book-modify-icon" @click="title = !title"></div>
+        </div>
+        <div class="book-modify flex space-between valign-center">
+            <div class="book-title" v-if="title == false">Storyline - <span class="book-modify-name">{{BOOKS[id].storyline}}</span></div>
+            <textarea type="text" :placeholder="BOOKS[id].storyline" v-model="BOOKS[id].storyline" class="ui-input book-modify-input" v-else></textarea>
+            <div class="book-modify-icon" @click="title = !title"></div>
+        </div>
+       
     </div>
 </template>
 
@@ -12,10 +38,37 @@ export default {
     data() {
         return {
             id: this.$route.params.id - 1,
+            title: false,
         }
     },
+    methods: {
+        
+    },
     computed: {
+        
     ...mapGetters(["BOOKS"]),
   },
 }
 </script>
+
+<style lang="scss">
+    .book-modify {
+        &-icon {
+            background-image: url(../images/svg/pen.svg);
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+            width: 20px;
+            height: 20px;
+        }
+        &-input {
+            max-width: 200px;
+            font-size: 20px;
+        }
+        &-name {
+            color: #3d3d3d;
+            font-size: 22px;
+            font-weight: 700;
+        }
+    }
+</style>

@@ -2,79 +2,100 @@
   <div class="wrapper">
     <div class="books-title">Create your book</div>
 
-    <label for="">Title</label>
-    <input type="text" v-model="BOOKS.title" />
-    <button @click="addNewBook()">addNewBook</button>
+    <div class="ui-form books-form">
+      <div class="ui-form-field">
+        <label for="title">Think up a title for your book</label>
+        <input
+          type="text"
+          v-model="BOOKS.title"
+          placeholder="Title"
+          id="title"
+        />
+      </div>
+      <div class="ui-form-field">
+        <label for="title">Sign your book</label>
+        <input type="text" v-model="BOOKS.author" placeholder="Author" />
+      </div>
+      <div class="ui-form-field">
+        <label for="title">Enter the ISBN code</label>
+        <input type="text" v-model="BOOKS.ISBN" placeholder="ISBN" />
+      </div>
+      <div class="ui-form-field">
+        <label for="title">Think up a title for your book</label>
+        <textarea type="text" v-model="BOOKS.storyline" placeholder="Text" />
+      </div>
+      <button class="ui-btn books-form-btn" @click="addNewBook()">
+        addNewBook
+      </button>
 
-    Count of books {{ this.BOOKS.length }}
+      <transition name="fade" mode="out-in">
+        <template v-if="this.BOOKS.length > 0">
+          <div class="books-form-background"></div>
+        </template>
+      </transition>
+    </div>
 
-    <div class="book-container">
-      <div class="row">
-        <div class="wrapper" v-for="(book, index) in BOOKS" :key="book.id">
-          <router-link :to="{ name: 'bookitem', params: { id: book.id } }">
-            <li>Book - {{ book.id }} / {{ index }}</li>
+    <template v-if="this.BOOKS.length > 0">
+      
+
+      You've already written this many books - {{ this.BOOKS.length }}
+
+      <div class="book-container">
+        <div class="row">
+          <div class="col-10">
+            <div class="books-title">Library</div>
+            <div class="row">
+        
+        <div class="col-6" v-for="(book, index) in BOOKS" :key="book.index">
+          <div class="book-wrapper">
             <div class="book-img">
-              <img :src="book.image_url" :alt="book.title" />
+              <!-- <img :src="book.image_url" :alt="book.title" /> -->
             </div>
             <div class="book-title">{{ book.title }}</div>
-            <div class="book-title">{{ book.date }}</div>
+            <!-- <div class="book-title">{{ book.date }}</div> -->
+            <div class="book-author">{{ book.author }}</div>
 
-          </router-link>
-          <div class="flex">
-            <button @click="RemoveBook(book, index)" class="ui-btn">
-              Delete
-            </button>
+            <div class="book-footer flex space-between">
+              <router-link
+                :to="{ name: 'bookitem', params: { id: book.id } }"
+                class="ui-btn book-btn-edit"
+              >
+                Edit
+              </router-link>
+              <button
+                @click="RemoveBook(book, index)"
+                class="ui-btn book-btn-delete"
+              ></button>
+            </div>
           </div>
         </div>
-        <!-- <router-link
-          v-for="book in BOOKS"
-          :to="{name: booksitem}"
-          :key="book.id"
-        >
-          <div class="book-img">
-            <img :src="book.image_url" :alt="book.title" />
-          </div>
-          <div class="book-title">{{ book.title }}</div>
-          <div class="flex">
-            <button @click="RemoveBook(book)" class="ui-btn">Delete</button>
-            <router-link :to="{ name: 'bookInfo' }">bookInfo</router-link>
-          </div>
-        </router-link> -->
 
-        <!-- <div v-for="book in BOOKS" :key="book.id" class="book-item col-3">
-          <div class="book-img">
-            <img :src="book.image_url" :alt="book.title" />
-          </div>
-          <div class="book-title">{{ book.title }}</div>
-          <div class="flex">
-            <button @click="RemoveBook(book)" class="ui-btn">Delete</button>
-            <button @click="infoBook(book)" class="ui-btn">info</button>
-          </div>
-        </div> -->
-
-      
       </div>
-    </div>
-<br><br><hr><br><br>
-<ul>
-  <li v-for="delitem in DELBOOK" :key="delitem.id">
-    {{delitem.title}}
-    {{delitem.date}}
-  </li>
-</ul>
-    <!-- <bookInfoVue></bookInfoVue> -->
+          </div>
+          <div class="col-2">
+            <div class="books-title">Deleted books</div>
+            <div class="deleted-books">
+              <div class="deleted-books-item" v-for="delitem in DELBOOK" :key="delitem.id">
+                {{ delitem.title }}
+                -
+                {{ delitem.date }}
+              </div>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+    </template>
+   
   </div>
 </template>
 
 <script>
 import { mapActions, mapGetters } from "vuex";
-// import bookInfoVue from './bookInfo.vue';
 
 export default {
   name: "AccaountBooks",
-  components: {
-    // bookInfoVue,
-  },
+  components: {},
   data() {
     return {
       bookID: 1,
@@ -86,12 +107,15 @@ export default {
   methods: {
     printDate: function () {
       return new Date().toLocaleTimeString();
-     },
+    },
     addNewBook() {
       const newBooks = {
-        title: this.BOOKS.title,
         id: this.bookID++,
-        date: this.printDate()
+        title: this.BOOKS.title,
+        author: this.BOOKS.author,
+        ISBN: this.BOOKS.ISBN,
+        date: this.printDate(),
+        storyline: this.BOOKS.storyline,
       };
       this.ADD_NEW_BOOKS(newBooks);
     },
@@ -100,18 +124,23 @@ export default {
     },
 
     RemoveBook(book) {
-      book.date = this.printDate()
+      book.date = this.printDate();
       this.DELETE_BOOK(book);
     },
+    
     ...mapActions([
       "GET_BOOKS_FROM_API",
       "ADD_NEW_BOOKS",
       "DELETE_BOOK",
       "SHOW_INFO_BOOK",
     ]),
+
+    // getRandomInt(min, max) {
+    //   return Math.floor(Math.random() * (max - min)) + min;
+    // }
   },
   computed: {
-    ...mapGetters(["BOOKS",'DELBOOK']),
+    ...mapGetters(["BOOKS", "DELBOOK"]),
   },
   mounted() {
     this.GET_BOOKS_FROM_API();
@@ -127,6 +156,22 @@ export default {
     text-align: center;
     margin-bottom: 25px;
   }
+  &-form {
+    margin: 0 auto;
+    max-width: 800px;
+    &-btn {
+      margin: 0 auto;
+      display: block;
+      max-width: 250px;
+    }
+    &-background {
+      background-image: url(../images/arrow-down.png);
+      background-repeat: no-repeat;
+      background-position: center;
+      height: 500px;
+      width: 100%;
+    }
+  }
   &-input {
     max-width: 400px;
     margin: 0 auto;
@@ -137,11 +182,12 @@ export default {
   &-img {
     display: block;
     line-height: 0;
-    margin-bottom: 35px;
+    margin-bottom: 15px;
     height: 0;
     padding-bottom: 100%;
     overflow: hidden;
     position: relative;
+    border: 1px solid rgb(255, 207, 110);
     img {
       position: absolute;
       top: 50%;
@@ -155,6 +201,12 @@ export default {
     }
   }
   &-title {
+    font-weight: 700;
+    font-size: 20px;
+    text-align: center;
+  }
+  &-author {
+    font-size: 14px;
     text-align: center;
   }
   &-popup {
@@ -169,9 +221,47 @@ export default {
   &-item {
     margin-bottom: 25px;
   }
+  &-wrapper {
+    margin-bottom: 25px;
+  }
+  &-btn {
+    &-delete {
+      background-image: url(../images/svg/delete.svg);
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: contain;
+      background-color: #fff;
+      border: 1px solid #ff7979;
+      &:hover {
+        background-color: #ff7979;
+      }
+    }
+    &-edit {
+      flex: 0 0 80%;
+      max-width: 80%;
+      background: #7ed6df;
+      border: 1px solid #7ed5df00;
+      &:hover {
+        color: #000;
+        background: #fff;
+        border: 1px solid #7ed6df;
+      }
+    }
+  }
+  &-footer {
+    gap: 10px;
+  }
 }
 
-.popupIsOpen {
-  display: block;
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 1s;
+  opacity: 0;
 }
+.fade-leave,
+.fade-enter-to {
+  opacity: 1;
+}
+
+
 </style>
